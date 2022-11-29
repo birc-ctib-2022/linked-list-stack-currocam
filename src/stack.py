@@ -17,26 +17,37 @@ class Link(Generic[T]):
 
 List = Optional[Link[T]]
 
+class EmptyStack(Exception):
+    pass
 
 class Stack(Generic[T]):
     """A stack of elements of (generic) type T."""
 
     def __init__(self) -> None:
         """Create a new stack of values of type T."""
-        # FIXME: code here
+        self.link = None
 
     def push(self, x: T) -> None:
         """Push x on the top of this stack."""
-        # FIXME: code here
+        self.link = Link(x, self.link)
+
 
     def top(self) -> T:
         """Return the top of the stack."""
-        # FIXME: code here
+        if self:
+            return self.link.head
+        raise EmptyStack
 
     def pop(self) -> T:
         """Pop the top element off the stack and return it."""
-        # FIXME: code here
+        if self:
+            val = self.top()
+            self.link = self.link.tail
+            return val
+        raise EmptyStack
 
     def is_empty(self) -> bool:
         """Test if the stack is empty."""
-        # FIXME: code here
+        return self.link is None
+    def __bool__(self) -> bool:
+        return not self.is_empty()
